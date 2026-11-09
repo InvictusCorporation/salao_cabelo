@@ -1,0 +1,113 @@
+[
+  {
+    "name": "invictus_agendamento",
+    "language": "pt_BR",
+    "category": "UTILITY",
+    "components": [
+      {
+        "type": "BODY",
+        "text": "Olá, {{1}}! Seu agendamento de {{2}} com {{3}} está marcado para {{4}}, às {{5}}. Endereço: {{6}}.",
+        "example": {
+          "body_text": [
+            [
+              "Cliente Exemplo",
+              "Corte masculino",
+              "Profissional Exemplo",
+              "10/11/2026",
+              "14:00",
+              "Endereço do salão"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "FOOTER",
+        "text": "Para parar mensagens, responda SAIR."
+      },
+      {
+        "type": "BUTTONS",
+        "buttons": [
+          {
+            "type": "QUICK_REPLY",
+            "text": "Confirmar presença"
+          },
+          {
+            "type": "QUICK_REPLY",
+            "text": "Remarcar"
+          },
+          {
+            "type": "QUICK_REPLY",
+            "text": "Cancelar"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "invictus_lembrete",
+    "language": "pt_BR",
+    "category": "UTILITY",
+    "components": [
+      {
+        "type": "BODY",
+        "text": "Olá, {{1}}! Lembramos seu atendimento de {{2}} com {{3}} em {{4}}, às {{5}}. Endereço: {{6}}. Confirme sua presença pelos botões abaixo.",
+        "example": {
+          "body_text": [
+            [
+              "Cliente Exemplo",
+              "Corte masculino",
+              "Profissional Exemplo",
+              "10/11/2026",
+              "14:00",
+              "Endereço do salão"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "FOOTER",
+        "text": "Para parar mensagens, responda SAIR."
+      },
+      {
+        "type": "BUTTONS",
+        "buttons": [
+          {
+            "type": "QUICK_REPLY",
+            "text": "Confirmar presença"
+          },
+          {
+            "type": "QUICK_REPLY",
+            "text": "Remarcar"
+          },
+          {
+            "type": "QUICK_REPLY",
+            "text": "Cancelar"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "invictus_aniversario",
+    "language": "pt_BR",
+    "category": "MARKETING",
+    "components": [
+      {
+        "type": "BODY",
+        "text": "Olá, {{1}}! A equipe do {{2}} deseja um feliz aniversário! Fale conosco para conhecer os cuidados e condições especiais deste mês.",
+        "example": {
+          "body_text": [
+            [
+              "Cliente Exemplo",
+              "Salão Exemplo"
+            ]
+          ]
+        }
+      },
+      {
+        "type": "FOOTER",
+        "text": "Para parar mensagens, responda SAIR."
+      }
+    ]
+  }
+]

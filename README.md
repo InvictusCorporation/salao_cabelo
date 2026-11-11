@@ -1,4 +1,4 @@
-# Invictus Beauty — v0.4
+# Invictus Beauty — v0.4.1
 
 Aplicativo web para barbearias e salões da Invictus Systems, com autenticação de administrador, profissional e cliente, API e banco SQLite persistente no servidor.
 
@@ -103,7 +103,7 @@ Testes automatizados utilizam bancos temporários isolados. A verificação visu
 
 Senhas usam scrypt com salt aleatório. Sessões têm token aleatório, somente o hash do token é persistido, e o cookie é HttpOnly e SameSite=Strict. Alterar a senha revoga sessões anteriores. Mutações exigem origem local autorizada e, após login, token CSRF. Há limite persistido de tentativas de autenticação e auditoria das alterações.
 
-A instalação na VPS usa origem HTTPS por IP, cookies Secure e backup diário. Verificação de e-mail e recuperação de senha continuam pendentes. Não há recuperação de senha por e-mail nem redefinição pelo administrador nesta entrega. Não apague o banco para recuperar acesso.
+A instalação na VPS usa origem HTTPS por IP, cookies Secure e backup diário. Verificação de e-mail e recuperação de senha continuam pendentes. Há redefinição privada da senha administrativa por link de uso único emitido no console autorizado da VPS (ver docs/DEPLOYMENT.md). A nova senha é escolhida pelo proprietário na tela privada. Recuperação por e-mail permanece pendente. Não apague o banco para recuperar acesso.
 
 O conector WhatsApp foi implementado com fila, lembretes, aniversários, status e respostas de botões, mas os envios reais continuam desativados: o número do salão ainda não foi definido. Credenciais, modelos aprovados, verificação do webhook na Meta e teste em telefone real permanecem pendentes; a hospedagem HTTPS por IP já está disponível. Consulte docs/WHATSAPP.md. E-mail, push, pagamentos e ofertas de antecipação ainda não foram integrados.
 

@@ -1,5 +1,9 @@
 # Situação — 9 de novembro de 2026 — v0.4
 
+## Senha administrativa — v0.4.1
+
+Fluxo privado para redefinir a senha do administrador existente: emissão por console autorizado, uso único, validade de 30 minutos, senha definida pelo proprietário, revogação de sessões antigas e proteção contra reutilização. Não há senha universal nem criação pública de administradores. O esquema v3 é aditivo; 60 testes passaram.
+
 ## Publicação na VPS — 11 de novembro de 2026
 
 Aplicativo publicado em https://76.13.113.108:8445/ com HTTPS válido, serviços próprios, banco migrado preservando a conta existente, backup diário e sincronização horária do certificado já gerenciado na VPS. Os 52 testes passaram no runtime Node.js v24.19.0 do servidor. Os demais projetos não foram alterados ou reiniciados; a comparação dos processos antes/depois permaneceu igual. Detalhes em DEPLOYMENT.md.
@@ -46,7 +50,7 @@ Aplicativo publicado em https://76.13.113.108:8445/ com HTTPS válido, serviços
 
 ## Validação
 
-52 testes passaram. Os testes de domínio e integração cobrem autenticação, permissões, isolamento, segurança das requisições, transações, concorrência por vaga, remarcação, logout, expiração e persistência. A validação de navegador utilizou contas fictícias de administrador, profissional e cliente em banco temporário, incluindo criação de serviço, criação de reserva e persistência após recarregar.
+60 testes passaram. Os testes de domínio e integração cobrem autenticação, permissões, isolamento, segurança das requisições, transações, concorrência por vaga, remarcação, logout, expiração e persistência. A validação de navegador utilizou contas fictícias de administrador, profissional e cliente em banco temporário, incluindo criação de serviço, criação de reserva e persistência após recarregar.
 
 Na entrega v0.2, o banco principal foi inicializado sem usuários para o primeiro acesso do proprietário. A atualização v0.3 preserva contas, sessões e cadastros existentes. As contas de teste não estão no banco principal.
 

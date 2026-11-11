@@ -70,3 +70,16 @@ O banco de produção é independente do banco no computador local depois da mig
 - Os processos dos serviços dos outros projetos foram comparados antes/depois e permaneceram iguais.
 
 O login em produção deve usar a conta que o proprietário já criou. Não foi alterada senha nem criada conta padrão. O WhatsApp continua desativado, aguardando número, credenciais, modelos e verificação pela Meta.
+
+## Definir novamente a senha do administrador
+
+A versão 0.4.1 permite ao operador autorizado emitir pelo console um acesso privado de uso único, válido por 30 minutos, para a conta administradora existente:
+
+```bash
+cd /opt/invictus-beauty/app
+DB_PATH=/var/lib/invictus-beauty/invictus.sqlite PUBLIC_ORIGIN=https://76.13.113.108:8445 /opt/invictus-beauty/runtime/node scripts/recover-admin.mjs
+```
+
+Se houver mais de um administrador, informe o e-mail da conta como argumento. A saída contém um link privado: não publique, não versionar e entregue somente ao proprietário. O segredo fica no fragmento da URL e é removido da barra ao abrir a tela; não entra em logs de acesso do servidor nem em armazenamento persistente do navegador. Recarregar a página depois dessa remoção exige reabrir o link original enquanto ele for válido.
+
+O operador não define ou visualiza a nova senha. O proprietário a digita e confirma na tela privada. Ao concluir, o link é inutilizado e todas as sessões antigas daquela conta são revogadas. O banco guarda apenas o hash do segredo de recuperação. Emitir o acesso, por si só, não muda a senha ou as sessões. O fluxo não cria administradores, não promove clientes e não oferece uma senha universal. Uma mudança normal de senha também invalida convites pendentes. O esquema SQLite v3 adiciona somente a tabela de recuperação, preservando os dados existentes.

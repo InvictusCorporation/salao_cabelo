@@ -11,6 +11,7 @@ import {fail,text,email,validDate,birthDate,validateConfig} from './validation.m
 import {slots,saveAppointment} from './domain.mjs';
 import {whatsappFields} from './whatsapp-fields.mjs';
 import {createWhatsApp,appointmentFingerprint} from './whatsapp.mjs';
+import {inspectRecovery,completeAdminRecovery} from './recovery.mjs';
 const root=fileURLToPath(new URL('.',import.meta.url));
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8'};
 const allowed=new Set(['/index.html','/styles.css','/app.js','/domain.mjs','/clients.mjs']);
@@ -49,6 +50,12 @@ export function createApp({dbPath=path.join(root,'data','invictus.sqlite'),secur
    if(!req.headers['content-type']?.startsWith('application/json'))fail('Envie JSON.',415);
   }
   if(route==='/api/auth/status'&&method==='GET'){send(res,200,{needsSetup:!db.prepare('SELECT id FROM users LIMIT 1').get(),authenticated:Boolean(getSession(db,req))});return;}
+  if(['/api/auth/admin-recovery/inspect','/api/auth/admin-recovery/complete'].includes(route)&&method==='POST'){
+   if(!rateLimit(db,'admin-recovery:'+req.socket.remoteAddress,20))fail('Muitas tentativas. Aguarde 15 minutos.',429);
+   const input=await body(req);
+   if(route.endsWith('/inspect')){const row=inspectRecovery(db,input.token);send(res,200,{name:row.name,email:row.email,expiresAt:row.expires_at});return;}
+   const result=await completeAdminRecovery(db,input.token,input.password);cookie(res,'',0);send(res,200,result);return;
+  }
   if(['/api/auth/setup','/api/auth/register','/api/auth/login'].includes(route)&&method==='POST'){
    const input=await body(req),address=req.socket.remoteAddress;
    if(!rateLimit(db,'auth-ip:'+address,100))fail('Muitas tentativas. Aguarde 15 minutos.',429);
@@ -86,7 +93,7 @@ export function createApp({dbPath=path.join(root,'data','invictus.sqlite'),secur
    if(typeof input.currentPassword!=='string'||input.currentPassword.length>128||!await verifyPassword(input.currentPassword,user.password_hash))fail('Senha atual incorreta.');
    if(!passwordValid(input.password))fail('Use uma senha de 12 a 128 caracteres.');
    const hash=await hashPassword(input.password);
-   transaction(db,()=>{db.prepare('UPDATE users SET password_hash=?,must_change=0 WHERE id=?').run(hash,user.id);db.prepare('DELETE FROM sessions WHERE user_id=?').run(user.id);audit(db,user,'password_changed',user.id);});
+   transaction(db,()=>{db.prepare('UPDATE users SET password_hash=?,must_change=0 WHERE id=?').run(hash,user.id);db.prepare('DELETE FROM sessions WHERE user_id=?').run(user.id);db.prepare('DELETE FROM admin_recovery WHERE user_id=?').run(user.id);audit(db,user,'password_changed',user.id);});
    loginResult(req,res,db.prepare('SELECT * FROM users WHERE id=?').get(user.id));return;
   }
   if(user.must_change)fail('Altere sua senha temporária antes de continuar.',403);

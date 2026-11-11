@@ -46,7 +46,10 @@ export function openDatabase(filename) {
     CREATE INDEX IF NOT EXISTS whatsapp_due ON whatsapp_outbox(state,next_at);
     CREATE TABLE IF NOT EXISTS whatsapp_inbound(id TEXT PRIMARY KEY,received_at INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS whatsapp_receipts(provider_id TEXT NOT NULL,status TEXT NOT NULL,recipient TEXT NOT NULL,at INTEGER NOT NULL,error_code TEXT,PRIMARY KEY(provider_id,status));
-    PRAGMA user_version=2;`);
+    CREATE TABLE IF NOT EXISTS admin_recovery(
+      token_hash TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      password_fingerprint TEXT NOT NULL,expires_at INTEGER NOT NULL,used_at INTEGER);
+    PRAGMA user_version=3;`);
   if (!db.prepare('SELECT id FROM businesses WHERE id=?').get('main')) {
     db.prepare('INSERT INTO businesses(id,data) VALUES(?,?)').run('main', JSON.stringify({ ...seed().business, timezone: 'America/Fortaleza' }));
   }

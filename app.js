@@ -223,6 +223,8 @@ function visibleMenus(){
 }
 async function boot(){
  root.innerHTML='<div class="empty">Carregando Invictus Beauty…</div>';
+ const recoveryToken=new URLSearchParams(location.hash.slice(1)).get('admin-recovery');
+ if(recoveryToken){history.replaceState(null,'',location.pathname+location.search);await adminRecoveryScreen(recoveryToken);return;}
  try{
   const status=await api('/api/auth/status');needsSetup=status.needsSetup;
   if(status.authenticated){const result=await api('/api/auth/me');session=result.user;csrf=result.csrf;await enterWorkspace();}
@@ -328,5 +330,27 @@ async function loadWhatsApp(){
 function whatsappHistory(messages){
  if(!messages.length)return empty('Nenhuma mensagem registrada','Os envios aparecerão aqui quando a conexão e as autorizações estiverem configuradas.');
  return '<div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Mensagem</th><th>Situação</th><th>Retorno do cliente / observação</th><th></th></tr></thead><tbody>'+messages.map(m=>'<tr><td>'+esc(by('clients',m.client_id)?.name||'Cliente')+'</td><td>'+esc(waKinds[m.kind])+'<br><span class="subtle">'+new Date(m.updated_at).toLocaleString('pt-BR',{timeZone:'America/Fortaleza'})+'</span></td><td><span class="badge '+(['failed','unknown'].includes(m.state)?'cancelled':['accepted','queued','sending'].includes(m.state)?'pending':'')+'">'+esc(waStates[m.state]||m.state)+'</span></td><td class="wa-observation">'+esc(m.action_requested==='reschedule'?'Remarcação solicitada — tratar na agenda':m.action_requested==='confirm'?'Presença confirmada pelo WhatsApp':m.action_requested==='cancel'?'Cancelado pelo cliente':m.error||'')+'</td><td>'+(m.state==='failed'?btn('Tentar novamente','wa-retry','small','data-id="'+m.id+'"'):'')+'</td></tr>').join('')+'</tbody></table></div>';
+}
+
+
+async function adminRecoveryScreen(token){
+ session=null;state=null;csrf='';
+ document.title='Invictus Beauty • Senha do administrador';
+ try{
+  const account=await api('/api/auth/admin-recovery/inspect','POST',{token});
+  root.innerHTML='<div class="auth-shell"><div class="auth-brand">'+icon('crown')+'<strong>INVICTUS BEAUTY</strong></div><section class="panel auth-card"><span class="eyebrow">Acesso administrativo privado</span><h1>Defina sua senha de administrador</h1><p class="subtitle">Este acesso é exclusivo da conta administradora abaixo. Seus clientes e agendamentos serão preservados.</p><form class="auth-form"><div class="form-grid">'+field('E-mail do administrador','email','email',account.email,'readonly autocomplete="username"')+field('Nova senha (mínimo 12 caracteres)','password','password','','required minlength="12" maxlength="128" autocomplete="new-password"')+field('Repita a nova senha','repeat','password','','required minlength="12" maxlength="128" autocomplete="new-password"')+'</div><div class="form-error" role="alert"></div><button class="btn primary full" type="submit">Salvar senha de administrador</button></form><p class="form-hint">Acesso de uso único, válido até '+new Date(account.expiresAt).toLocaleTimeString('pt-BR',{timeZone:'America/Fortaleza',hour:'2-digit',minute:'2-digit'})+' (Fortaleza). Ao salvar, os acessos antigos desta conta serão encerrados. Não compartilhe este acesso.</p></section></div>';
+  root.querySelector('form').onsubmit=async e=>{
+   e.preventDefault();const f=e.target,fd=new FormData(f),submit=f.querySelector('button');submit.disabled=true;
+   try{
+    if(fd.get('password')!==fd.get('repeat'))throw Error('As novas senhas precisam ser iguais.');
+    const result=await api('/api/auth/admin-recovery/complete','POST',{token,password:fd.get('password')});
+    token='';f.reset();authScreen('login');root.querySelector('[name=email]').value=result.email;toast('Senha do administrador definida. Entre com sua nova senha.');
+   }catch(error){f.querySelector('.form-error').textContent=error.message;}
+   finally{submit.disabled=false;}
+  };
+ }catch(error){
+  token='';root.innerHTML='<div class="auth-shell"><section class="panel auth-card"><h1>Acesso privado indisponível</h1><p class="subtitle">'+esc(error.message)+'</p><button id="back-to-login" class="btn full">Voltar ao login</button></section></div>';
+  root.querySelector('button').onclick=()=>authScreen('login');
+ }
 }
 

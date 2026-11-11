@@ -2,7 +2,13 @@
 
 Aplicativo web para barbearias e salões da Invictus Systems, com autenticação de administrador, profissional e cliente, API e banco SQLite persistente no servidor.
 
-## Executar
+## Acesso na VPS
+
+Aplicativo publicado em **https://76.13.113.108:8445/**, por IP e com HTTPS. Use a mesma conta criada no ambiente local. O banco foi migrado uma vez e agora é independente do banco neste computador.
+
+A instalação usa serviços, porta e pastas próprios. Instruções de manutenção e backup: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). O WhatsApp permanece desativado enquanto a conexão Meta não for concluída.
+
+## Executar localmente
 
 Requer Node.js 22.16 ou superior com suporte a node:sqlite. Validado neste computador com Node.js 26.13. Não há dependências para instalar.
 
@@ -97,9 +103,9 @@ Testes automatizados utilizam bancos temporários isolados. A verificação visu
 
 Senhas usam scrypt com salt aleatório. Sessões têm token aleatório, somente o hash do token é persistido, e o cookie é HttpOnly e SameSite=Strict. Alterar a senha revoga sessões anteriores. Mutações exigem origem local autorizada e, após login, token CSRF. Há limite persistido de tentativas de autenticação e auditoria das alterações.
 
-A aplicação continua local. Antes de hospedá-la, devem ser definidos domínio, HTTPS, origem permitida, cookies Secure, verificação de e-mail, recuperação de senha e operação de backups. Não há recuperação de senha por e-mail nem redefinição pelo administrador nesta entrega. Não apague o banco para recuperar acesso.
+A instalação na VPS usa origem HTTPS por IP, cookies Secure e backup diário. Verificação de e-mail e recuperação de senha continuam pendentes. Não há recuperação de senha por e-mail nem redefinição pelo administrador nesta entrega. Não apague o banco para recuperar acesso.
 
-O conector WhatsApp foi implementado com fila, lembretes, aniversários, status e respostas de botões, mas os envios reais continuam desativados: o número do salão ainda não foi definido. Credenciais, modelos aprovados, hospedagem HTTPS, webhook e teste em telefone real permanecem pendentes. Consulte docs/WHATSAPP.md. E-mail, push, pagamentos e ofertas de antecipação ainda não foram integrados.
+O conector WhatsApp foi implementado com fila, lembretes, aniversários, status e respostas de botões, mas os envios reais continuam desativados: o número do salão ainda não foi definido. Credenciais, modelos aprovados, verificação do webhook na Meta e teste em telefone real permanecem pendentes; a hospedagem HTTPS por IP já está disponível. Consulte docs/WHATSAPP.md. E-mail, push, pagamentos e ofertas de antecipação ainda não foram integrados.
 
 ## Organização
 

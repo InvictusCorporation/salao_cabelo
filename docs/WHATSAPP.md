@@ -4,7 +4,7 @@
 
 O conector da API oficial, a fila persistente, os agendamentos de envio, o recebimento de status e as respostas dos botões foram implementados. Os testes usam um transporte simulado e dados fictícios; não enviam mensagens à Meta.
 
-O proprietário informou que ainda não definiu o número do salão. A conexão real permanece pendente e os envios estão desativados. Não foi criada conta Meta, registrado número, publicado servidor, fornecido token nem submetido template. Não houve teste de entrega em telefone real.
+O proprietário informou que ainda não definiu o número do salão. A conexão real permanece pendente e os envios estão desativados. A aplicação foi publicada em 11 de novembro de 2026 em https://76.13.113.108:8445/. Não foi criada conta Meta, registrado número, fornecido token nem submetido template. A configuração e a verificação do callback na Meta continuam pendentes. Não houve teste de entrega em telefone real.
 
 ## Ativação após definir o número
 

@@ -1,5 +1,9 @@
 # Situação — 9 de novembro de 2026 — v0.4
 
+## Publicação na VPS — 11 de novembro de 2026
+
+Aplicativo publicado em https://76.13.113.108:8445/ com HTTPS válido, serviços próprios, banco migrado preservando a conta existente, backup diário e sincronização horária do certificado já gerenciado na VPS. Os 52 testes passaram no runtime Node.js v24.19.0 do servidor. Os demais projetos não foram alterados ou reiniciados; a comparação dos processos antes/depois permaneceu igual. Detalhes em DEPLOYMENT.md.
+
 ## Preparação do WhatsApp — v0.4
 
 - Conector HTTP para a API oficial, sem dependências externas.
@@ -12,7 +16,7 @@
 - 52 testes aprovados, incluindo 17 testes do conector com transporte simulado.
 - Teste visual em banco separado: configuração desativada, gravação e persistência da autorização do cliente.
 
-**Ativação real pendente:** o proprietário ainda não definiu o número do salão. Não houve conexão real à Meta nem envio a telefone. Faltam conta/número, credenciais, modelos aprovados, hospedagem HTTPS, callback público e teste ponta a ponta.
+**Ativação real pendente:** o proprietário ainda não definiu o número do salão. Não houve conexão real à Meta nem envio a telefone. A hospedagem HTTPS por IP já foi concluída. Faltam conta/número, credenciais, modelos aprovados, configuração e verificação do callback na Meta e teste ponta a ponta.
 
 ## Histórico e aniversários — v0.3
 
@@ -50,7 +54,7 @@ Na entrega v0.2, o banco principal foi inicializado sem usuários para o primeir
 
 | Área | Pendências |
 | --- | --- |
-| Hospedagem | Domínio, TLS/HTTPS, configuração de origem pública, disco persistente, acesso externo e operação de backups. |
+| Hospedagem | Publicada por IP com HTTPS na porta 8445, disco persistente e backup diário. Domínio não solicitado. |
 | Contas | Verificação de e-mail, recuperação de senha, desativação de contas e administração de múltiplos administradores. |
 | Negócio | Um estabelecimento por instalação; não há onboarding de múltiplos estabelecimentos na mesma instância. |
 | Configuração | Logotipo personalizado, horários por dia do profissional e sinalização completa de mudanças gerais de disponibilidade. |
